@@ -1,0 +1,3 @@
+@echo off
+@echo Starting SPA CLI Service...
+start "SPA CLI Service" /d ".\PersonSearch.App" npm run serve
