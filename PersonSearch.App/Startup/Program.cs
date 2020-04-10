@@ -1,7 +1,7 @@
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Hosting;
 
-namespace PersonSearch.App
+namespace PersonSearch.App.Startup
 {
     public class Program
     {
