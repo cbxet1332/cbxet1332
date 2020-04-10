@@ -3,13 +3,12 @@ using System.Threading;
 using DotNetify;
 using JetBrains.Annotations;
 
-namespace PersonSearch.App.ViewModels
+namespace PersonSearch.App.ViewModels.WiringTest
 {
     [UsedImplicitly]
     public class WiringTest : BaseVM
     {
         private readonly Timer _timer;
-        public DateTime ServerTime => DateTime.Now;
 
         public WiringTest()
         {
@@ -20,6 +19,11 @@ namespace PersonSearch.App.ViewModels
             }, null, 0, 1000);
         }
 
-        public override void Dispose() => _timer.Dispose();
+        public DateTime ServerTime => DateTime.Now;
+
+        public override void Dispose()
+        {
+            _timer.Dispose();
+        }
     }
 }

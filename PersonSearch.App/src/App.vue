@@ -1,6 +1,6 @@
 <template>
   <div id="app">
-    <wiring-test greeting="Welcome to the Vue/Dotnetify wiring test page"/>
+    <wiring-test greeting="Welcome to the Vue/Dotnetify/EF wiring test page"/>
   </div>
 </template>
 
@@ -22,6 +22,6 @@ export default {
   -moz-osx-font-smoothing: grayscale;
   text-align: center;
   color: #2c3e50;
-  margin-top: 60px;
+  margin-top: 40px;
 }
 </style>

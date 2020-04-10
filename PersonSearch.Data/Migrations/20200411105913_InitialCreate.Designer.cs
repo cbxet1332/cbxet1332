@@ -8,8 +8,8 @@ using PersonSearch.Data;
 
 namespace PersonSearch.Data.Migrations
 {
-    [DbContext(typeof(ApplicationContext))]
-    [Migration("20200410150903_InitialCreate")]
+    [DbContext(typeof(ApplicationDbContext))]
+    [Migration("20200411105913_InitialCreate")]
     partial class InitialCreate
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -61,7 +61,7 @@ namespace PersonSearch.Data.Migrations
             modelBuilder.Entity("PersonSearch.Domain.Person", b =>
                 {
                     b.HasOne("PersonSearch.Domain.Group", "Group")
-                        .WithMany()
+                        .WithMany("Persons")
                         .HasForeignKey("GroupId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
