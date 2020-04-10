@@ -3,7 +3,7 @@ using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Routing;
 
-namespace PersonSearch.App
+namespace PersonSearch.App.Startup
 {
     public static class EndpointRouteBuilderExtensions
     {
