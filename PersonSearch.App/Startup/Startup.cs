@@ -1,4 +1,5 @@
 using DotNetify;
+using EFCore.DbContextFactory.Extensions;
 using JetBrains.Annotations;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -7,7 +8,9 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using PersonSearch.App.ViewModels.WiringTest;
 using PersonSearch.Data;
+using PersonSearch.Domain;
 
 namespace PersonSearch.App.Startup
 {
@@ -27,10 +30,18 @@ namespace PersonSearch.App.Startup
             services.AddSignalR();
             services.AddDotNetify();
 
-            services.AddSingleton<IConfiguration>(_config);
+            services.AddSingleton(_config);
 
-            services.AddDbContext<ApplicationContext>(options => 
-                options.UseSqlServer(_config.GetConnectionString("DefaultConnection")));
+            services.AddTransient<IApplicationDbContextFactory, ApplicationDbContextFactory>();
+            services.AddDbContext<ApplicationDbContext>(options => 
+                options
+                    .UseLazyLoadingProxies()
+                    .UseSqlServer(_config.GetConnectionString("DefaultConnection")), ServiceLifetime.Transient);
+
+            services.AddScoped<IRepository<Person>, Repository<Person>>();
+            services.AddScoped<IRepository<Group>, Repository<Group>>();
+
+            services.AddScoped<WiringTest>();
         }
 
         [UsedImplicitly]

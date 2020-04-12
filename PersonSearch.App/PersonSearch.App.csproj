@@ -18,4 +18,10 @@
     <ProjectReference Include="..\PersonSearch.Data\PersonSearch.Data.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <None Update="src\assets\logo.png">
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
+
 </Project>
