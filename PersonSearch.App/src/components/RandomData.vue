@@ -24,9 +24,6 @@
     import dotnetify from 'dotnetify/vue';
     export default dotnetify.vue.component({
         name: "random-data",
-        destroyed() {
-            this.vm.$destroy();
-        },
         data() {
             return {
                 Data: []

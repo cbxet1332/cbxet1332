@@ -1,5 +1,4 @@
 using DotNetify;
-using EFCore.DbContextFactory.Extensions;
 using JetBrains.Annotations;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
