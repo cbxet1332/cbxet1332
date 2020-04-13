@@ -5,8 +5,8 @@
             <p class="indent">
                 The purpose of this page is to diagnose wiring and configuration issues using a simple example component. <br/>
                 The page should be showing dynamically updating content pushed from the ViewModel without full page refreshes or postbacks. <br/>
-                If everything is wired up and configured correctly, you should see 2 items of random data from the database with change on 3 and 5 second intervals, <br/>
-                and the server time should be updating in real-time.
+                If everything is wired up and configured correctly, you should see 2 items of random data from the database which change on 3 and 5 
+                second intervals, and the server time should be updating in real-time.
             </p>
             <random-data />
             <server-time />
@@ -23,15 +23,14 @@
 </template>
 
 <script>
-    import dotnetify from 'dotnetify/vue';
     import RandomData from './RandomData.vue'
     import ServerTime from './ServerTime.vue'
 
-    export default dotnetify.vue.component({
+    export default {
         name: "wiring-test",
         components: { RandomData, ServerTime },
         props: { }
-    });
+    };
 </script>
 
 <style type="text/css">
@@ -39,12 +38,12 @@
         margin-top: 10px;
     }
     .indent {
-        margin-left: 150px;
-        margin-right: 150px;
+        margin-left: 100px;
+        margin-right: 100px;
     }
     .indent-left {
-        margin-left: 175px;
-        margin-right: 175px;
+        margin-left: 125px;
+        margin-right: 125px;
         text-align: left;
     }
     .bold {

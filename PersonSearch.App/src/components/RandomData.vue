@@ -22,15 +22,22 @@
 
 <script>
     import dotnetify from 'dotnetify/vue';
-    export default dotnetify.vue.component({
+
+    export default {
         name: "random-data",
+        created: function () {
+            this.vm = dotnetify.vue.connect("RandomData", this);
+        },
+        destroyed: function () {
+            this.vm.$destroy();
+        },
+        props: {},
         data() {
             return {
                 Data: []
             }
-        },
-        props: { }
-    }, "RandomData");
+        }
+    };
 </script>
 
 <style type="text/css">
