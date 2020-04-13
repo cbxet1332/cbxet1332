@@ -1,7 +1,6 @@
 <template>
-    <div>
-        <img alt="Vue logo" src="../assets/logo.png">
-        <h2 class="bold">{{ greeting }}</h2>
+    <div id="test-content">
+        <h2 class="bold">Welcome to the Vue/Dotnetify/EF wiring test page</h2>
         <div>
             <p class="indent">
                 The purpose of this page is to diagnose wiring and configuration issues using a simple example component. <br/>
@@ -31,11 +30,14 @@
     export default dotnetify.vue.component({
         name: "wiring-test",
         components: { RandomData, ServerTime },
-        props: { greeting: String }
-    }, "WiringTest");
+        props: { }
+    });
 </script>
 
 <style type="text/css">
+    #test-content {
+        margin-top: 10px;
+    }
     .indent {
         margin-left: 150px;
         margin-right: 150px;

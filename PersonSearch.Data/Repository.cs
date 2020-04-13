@@ -1,10 +1,7 @@
 ﻿using System;
 using System.Linq;
 using System.Linq.Expressions;
-using Castle.DynamicProxy.Generators.Emitters.SimpleAST;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.Query;
-using Expression = Castle.DynamicProxy.Generators.Emitters.SimpleAST.Expression;
 
 namespace PersonSearch.Data
 {
@@ -17,7 +14,7 @@ namespace PersonSearch.Data
             _contextFactory = contextFactory;
         }
 
-        public virtual IQueryable<TEntity> FetchAll(IApplicationDbContext context = null)
+        public IQueryable<TEntity> FetchAll(IApplicationDbContext context = null)
         {
             if (context != null)
             {
@@ -31,7 +28,7 @@ namespace PersonSearch.Data
             }
         }
 
-        public virtual IQueryable<TEntity> Fetch(Func<TEntity, bool> predicate, IApplicationDbContext context = null)
+        public IQueryable<TEntity> Fetch(Func<TEntity, bool> predicate, IApplicationDbContext context = null)
         {
             if (context != null)
             {
@@ -47,7 +44,7 @@ namespace PersonSearch.Data
             }
         }
 
-        public virtual IQueryable<TEntity> SkipTake<TProperty>(int qtyToSkip, int qtyToTake, IApplicationDbContext context = null, Expression<Func<TEntity,TProperty>> includeNavigationProperty = null)
+        public IQueryable<TEntity> SkipTake<TProperty>(int qtyToSkip, int qtyToTake, IApplicationDbContext context = null, Expression<Func<TEntity,TProperty>> includeNavigationProperty = null)
         {
             if (context != null)
             {
@@ -61,7 +58,7 @@ namespace PersonSearch.Data
             }
         }
 
-        public virtual TEntity FindByIndex(int rowIndex, IApplicationDbContext context = null)
+        public TEntity FindByIndex(int rowIndex, IApplicationDbContext context = null)
         {
             if (context != null)
             {
@@ -79,7 +76,7 @@ namespace PersonSearch.Data
             }
         }
 
-        public virtual TEntity FindById(int id, IApplicationDbContext context = null)
+        public TEntity FindById(int id, IApplicationDbContext context = null)
         {
             if (context != null)
             {
@@ -114,16 +111,6 @@ namespace PersonSearch.Data
                 .WithInclude(include)
                 .Skip(qtyToSkip)
                 .Take(qtyToTake);
-        }
-    }
-
-    public static class QueryableExtensions
-    {
-        public static IQueryable<TEntity> WithInclude<TEntity, TProperty>(this IQueryable<TEntity> query, Expression<Func<TEntity, TProperty>> include) where TEntity: class
-        {
-            return include == null ? 
-                query : 
-                query.Include(include);
         }
     }
 }
