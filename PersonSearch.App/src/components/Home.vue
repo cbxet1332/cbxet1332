@@ -10,12 +10,10 @@
 </template>
 
 <script>
-    import dotnetify from 'dotnetify/vue';
-
-    export default dotnetify.vue.component({
+    export default {
         name: "home",
         props: { }
-    });
+    };
 </script>
 
 <style type="text/css">

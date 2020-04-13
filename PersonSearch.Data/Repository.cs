@@ -14,16 +14,16 @@ namespace PersonSearch.Data
             _contextFactory = contextFactory;
         }
 
-        public IQueryable<TEntity> FetchAll(IApplicationDbContext context = null)
+        public IQueryable<TEntity> FetchAll<TProperty>(IApplicationDbContext context = null, Expression<Func<TEntity,TProperty>> includeNavigationProperty = null)
         {
             if (context != null)
             {
-                return context.Set<TEntity>();
+                return DoFetchAll(context, includeNavigationProperty);
             }
             
             using (var newContext = _contextFactory.Create())
             {
-                return newContext.Set<TEntity>()
+                return DoFetchAll(newContext, includeNavigationProperty)
                     .AsNoTracking();
             }
         }
@@ -111,6 +111,12 @@ namespace PersonSearch.Data
                 .WithInclude(include)
                 .Skip(qtyToSkip)
                 .Take(qtyToTake);
+        }
+
+        private static IQueryable<TEntity> DoFetchAll<TProperty>(IApplicationDbContext context, Expression<Func<TEntity,TProperty>> include)
+        {
+            return context.Set<TEntity>()
+                .WithInclude(include);
         }
     }
 }

@@ -7,6 +7,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using PersonSearch.App.ViewModels;
 using PersonSearch.App.ViewModels.WiringTest;
 using PersonSearch.Data;
 using PersonSearch.Domain;
@@ -29,18 +30,18 @@ namespace PersonSearch.App.Startup
             services.AddSignalR();
             services.AddDotNetify();
 
+
             services.AddSingleton(_config);
 
             services.AddTransient<IApplicationDbContextFactory, ApplicationDbContextFactory>();
             services.AddDbContext<ApplicationDbContext>(options => 
-                options
-                    .UseLazyLoadingProxies()
-                    .UseSqlServer(_config.GetConnectionString("DefaultConnection")), ServiceLifetime.Transient);
+                options.UseSqlServer(_config.GetConnectionString("DefaultConnection")), ServiceLifetime.Transient);
 
             services.AddScoped<IRepository<Person>, Repository<Person>>();
             services.AddScoped<IRepository<Group>, Repository<Group>>();
 
-            services.AddScoped<WiringTest>();
+            services.AddScoped<Persons>();
+            services.AddScoped<PersonSearchBar>();
         }
 
         [UsedImplicitly]

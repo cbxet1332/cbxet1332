@@ -4,7 +4,7 @@
         <div id="side">
             <div id="sidebar-top">
                 <div id="logo-container">
-                    <img id="logo" src="./assets/logo.png" />
+                    <router-link to="/"><img id="logo" src="./assets/logo.png" /></router-link>
                 </div>
                 <div id="app-name">
                     <p>PERSON-SEARCH<br />by Simon Edwards</p>
@@ -26,11 +26,12 @@
                 <div id="small-print">
                     <p>
                         <strong>(c) 2020 Simon Edwards</strong><br />
-                        All rights reserved. This software and related source code (the software), are provided as-is under the LGNU3 Licence.
-                        Save for where explicitly specified otherwise in the LGNU3 Licence, No part of the software may be reproduced,
-                        distributed, or transmitted in any form or by any means, including photocopying, recording, or other electronic
-                        or mechanical methods, without the prior written permission of the author, except uses permitted by copyright law.
-                        For permission requests, email the author at the address below.<br />
+                        All rights reserved. This software and related source code (the software), are provided as-is under the
+                        <a href="https://www.gnu.org/licenses/lgpl-3.0.en.html">Lesser GNU Public Licence v3</a> (LGPL3).
+                        Save for where explicitly specified otherwise in the LGPL3, or permitted under copyright law,
+                        no part of the software may be reproduced, distributed, or transmitted in any form or by any means,
+                        including photocopying, recording, or other electronic or mechanical methods, without the prior written
+                        permission of the author. For permission requests, email the author at the address below.<br />
                         <a href="mailto:cbxet1332@controlbox.co.uk">cbxet1332@controlbox.co.uk</a><br />
                         <a href="https://github.com/cbxet1332/cbxet1332">github.com/cbxet1332/cbxet1332</a>
                     </p>
@@ -73,6 +74,8 @@ export default {
     padding-top: 15px;
     padding-bottom: 10px;
     position: relative;
+    min-height: calc(100vh - 40px);
+    max-height: calc(100vh - 40px);
 }
 #logo-container {
     text-align: center;

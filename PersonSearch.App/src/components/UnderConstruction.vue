@@ -9,12 +9,10 @@
 </template>
 
 <script>
-    import dotnetify from 'dotnetify/vue';
-
-    export default dotnetify.vue.component({
+    export default {
         name: "under-construction",
         props: { }
-    });
+    };
 </script>
 
 <style type="text/css">
