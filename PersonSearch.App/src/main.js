@@ -5,7 +5,7 @@ Vue.use(VueRouter);
 import App from './App.vue'
 import Home from './components/Home.vue';
 import Persons from './components/Persons.vue';
-import WiringTest from './components/WiringTest.vue';
+import WiringTest from './components/WiringTest/WiringTest.vue';
 import UnderConstruction from './components/UnderConstruction.vue';
 
 const routes = [

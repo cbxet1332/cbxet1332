@@ -1,6 +1,6 @@
 <template>
     <div>
-        <h4 class="bold">Random Data:</h4>
+        <h4 class="bold">{{ msg }}</h4>
         <table align="center" width="400px">
             <thead>
                 <tr>
@@ -21,17 +21,18 @@
 </template>
 
 <script>
-    import dotnetify from 'dotnetify/vue';
-
     export default {
         name: "random-data",
+        inject: ['connect'],
         created: function () {
-            this.vm = dotnetify.vue.connect("RandomData", this);
+            this.vm = this.connect("RandomData", this);
         },
         destroyed: function () {
             this.vm.$destroy();
         },
-        props: {},
+        props: { 
+            msg: String 
+        },
         data() {
             return {
                 Data: []

@@ -28,18 +28,18 @@ namespace PersonSearch.Data
             }
         }
 
-        public IQueryable<TEntity> Fetch(Func<TEntity, bool> predicate, IApplicationDbContext context = null)
+        public IQueryable<TEntity> Fetch<TProperty>(Expression<Func<TEntity, bool>> queryExpression, IApplicationDbContext context = null, Expression<Func<TEntity,TProperty>> includeNavigationProperty = null)
         {
             if (context != null)
             {
-                return context.Set<TEntity>()
-                    .Where(e => predicate(e));
+                return DoFetchAll(context, includeNavigationProperty)
+                    .Where(queryExpression);
             }
             
             using (var newContext = _contextFactory.Create())
             {
-                return newContext.Set<TEntity>()
-                    .Where(e => predicate(e))
+                return DoFetchAll(newContext, includeNavigationProperty)
+                    .Where(queryExpression)
                     .AsNoTracking();
             }
         }

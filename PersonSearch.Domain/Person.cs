@@ -8,5 +8,8 @@ namespace PersonSearch.Domain
         public string Forenames { get; set; }
         public string Surname { get; set; }
         public Group Group { get; set; }
+
+        [NotMapped]
+        public string Name => Forenames + " " + Surname;
     }
 }
