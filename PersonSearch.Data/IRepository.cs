@@ -7,7 +7,7 @@ namespace PersonSearch.Data
     public interface IRepository<TEntity> where TEntity : class
     {
         IQueryable<TEntity> FetchAll<TProperty>(IApplicationDbContext context = null, Expression<Func<TEntity,TProperty>> includeNavigationProperty = null);
-        IQueryable<TEntity> Fetch(Func<TEntity,bool> predicate, IApplicationDbContext context = null);
+        IQueryable<TEntity> Fetch<TProperty>(Expression<Func<TEntity,bool>> queryExpression, IApplicationDbContext context = null, Expression<Func<TEntity,TProperty>> includeNavigationProperty = null);
         IQueryable<TEntity> SkipTake<TProperty>(int qtyToSkip, int qtyToTake, IApplicationDbContext context = null, Expression<Func<TEntity,TProperty>> includeNavigationProperty = null);
         TEntity FindByIndex(int rowIndex, IApplicationDbContext context = null);
         TEntity FindById(int id, IApplicationDbContext context = null);

@@ -27,9 +27,8 @@ namespace PersonSearch.App.Startup
         {
             services.AddCors();
             services.AddMemoryCache();
-            services.AddSignalR();
+            services.AddSignalR().AddNewtonsoftJsonProtocol();
             services.AddDotNetify();
-
 
             services.AddSingleton(_config);
 
@@ -40,8 +39,15 @@ namespace PersonSearch.App.Startup
             services.AddScoped<IRepository<Person>, Repository<Person>>();
             services.AddScoped<IRepository<Group>, Repository<Group>>();
 
-            services.AddScoped<Persons>();
-            services.AddScoped<PersonSearchBar>();
+            services.AddScoped<RandomData>();
+            services.AddScoped<ServerDateTime>();
+            services.AddScoped<ButtonTest>();
+            services.AddScoped<ButtonTestCounter>();
+            services.AddScoped<ButtonTestHandler>();
+
+            services.AddScoped<PersonsScope>();
+            services.AddScoped<PersonList>();
+            services.AddScoped<SearchBar>();
         }
 
         [UsedImplicitly]

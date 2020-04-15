@@ -1,25 +1,24 @@
 <template>
     <div>
-        <h4 class="bold">Server time is: {{ ServerDateTime }}</h4>
+        <p>You have clicked <strong>{{ ButtonClickCount }}</strong> times!</p>
     </div>
 </template>
 
 <script>
-    import dotnetify from 'dotnetify/vue';
-
     export default {
-        name: "server-time",
+        name: "button-test-counter",
+        inject: ['connect'],
         created: function () {
-            this.vm = dotnetify.vue.connect("ServerTime", this);
+            this.vm = this.connect("ButtonTestHandler.ButtonTestCounter", this);
         },
         destroyed: function () {
             this.vm.$destroy();
         },
         props: { },
         data: function () {
-            return { ServerDateTime: 'loading...' }
+            return { ButtonClickCount: 0 }
         }
-    };
+    }
 </script>
 
 <style type="text/css">

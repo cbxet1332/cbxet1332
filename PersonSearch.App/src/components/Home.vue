@@ -4,8 +4,8 @@
         <h3 class="bold">by Simon Edwards</h3>
         <br />
         <br />
-        <p><a href="https://github.com/cbxet1332/cbxet1332">Get the source code</a></p>
-        <p><a href="https://cbxet1332.atlassian.net/browse/ET">Track the project on Jira</a></p>
+        <p><a href="https://github.com/cbxet1332/cbxet1332" target="_blank">Get the source code</a></p>
+        <p><a href="https://cbxet1332.atlassian.net/browse/ET" target="_blank">Track the project on Jira</a></p>
     </div>
 </template>
 
