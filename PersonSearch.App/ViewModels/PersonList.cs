@@ -28,6 +28,8 @@ namespace PersonSearch.App.ViewModels
 
         public int PersonCount => _people.Length;
 
+        public string PersonCountSuffix => PersonCount == 1 ? "person" : "people";
+
         public void GetPersonData(string filterOnText = null)
         {
             using (var context = _contextFactory.Create(QueryTrackingBehavior.NoTracking))
@@ -69,6 +71,7 @@ namespace PersonSearch.App.ViewModels
             GetPersonData(filterOnText);
             Changed(nameof(Data));
             Changed(nameof(PersonCount));
+            Changed(nameof(PersonCountSuffix));
             PushUpdates();
         }
     }

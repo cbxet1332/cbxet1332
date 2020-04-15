@@ -17,12 +17,6 @@
 
     export default {
         name: "persons",
-        //created: function () {
-        //    this.vm = dotnetify.vue.connect("Persons", this);
-        //},
-        //destroyed: function () {
-        //    this.vm.$destroy();
-        //},
         components: { 
             'scope': dotnetify.vue.Scope,
             SearchBar, 
