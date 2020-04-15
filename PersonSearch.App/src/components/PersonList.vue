@@ -1,6 +1,6 @@
 <template>
     <div id="person-list-content">
-        <p>Showing {{ PersonCount }} Persons</p>
+        <p>Showing {{ PersonCount }} {{ PersonCountSuffix }}</p>
         <table align="left">
             <thead>
                 <tr>
@@ -33,7 +33,8 @@
         data() {
             return {
                 Data: [],
-                PersonCount: 0
+                PersonCount: 0,
+                PersonCountSuffix: 'people'
             }
         },
         props: { }
@@ -41,6 +42,9 @@
 </script>
 
 <style type="text/css">
+    #person-list-content {
+        margin-top: 20px;
+    }
     .bold {
         font-weight: bold;
     }
