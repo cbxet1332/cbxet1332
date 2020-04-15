@@ -11,11 +11,12 @@
 </template>
 
 <script>
+    import dotnetify from 'dotnetify/vue';
+
     export default {
         name: "server-date-time",
-        inject: ['connect'],
         created: function () {
-            this.vm = this.connect("ServerDateTime", this);
+            this.vm = dotnetify.vue.connect("ServerDateTime", this);
         },
         destroyed: function () {
             this.vm.$destroy();

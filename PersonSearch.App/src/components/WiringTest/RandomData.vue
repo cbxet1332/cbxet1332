@@ -21,11 +21,12 @@
 </template>
 
 <script>
+    import dotnetify from 'dotnetify/vue';
+
     export default {
         name: "random-data",
-        inject: ['connect'],
         created: function () {
-            this.vm = this.connect("RandomData", this);
+            this.vm = dotnetify.vue.connect("RandomData", this);
         },
         destroyed: function () {
             this.vm.$destroy();
