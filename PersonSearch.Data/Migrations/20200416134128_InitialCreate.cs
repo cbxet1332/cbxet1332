@@ -1,4 +1,5 @@
-﻿using Microsoft.EntityFrameworkCore.Migrations;
+﻿using System;
+using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace PersonSearch.Data.Migrations
 {
@@ -12,7 +13,8 @@ namespace PersonSearch.Data.Migrations
                 {
                     Id = table.Column<int>(nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    Name = table.Column<string>(nullable: true)
+                    Name = table.Column<string>(nullable: true),
+                    CreatedUtc = table.Column<DateTime>(nullable: false, defaultValueSql: "getutcdate()")
                 },
                 constraints: table =>
                 {
@@ -27,7 +29,8 @@ namespace PersonSearch.Data.Migrations
                         .Annotation("SqlServer:Identity", "1, 1"),
                     Forenames = table.Column<string>(nullable: true),
                     Surname = table.Column<string>(nullable: true),
-                    GroupId = table.Column<int>(nullable: false)
+                    GroupId = table.Column<int>(nullable: false),
+                    CreatedUtc = table.Column<DateTime>(nullable: false, defaultValueSql: "getutcdate()")
                 },
                 constraints: table =>
                 {

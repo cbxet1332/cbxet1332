@@ -2,6 +2,8 @@ import Vue from 'vue'
 import VueRouter from "vue-router";
 Vue.use(VueRouter);
 
+import moment from 'moment'
+
 import App from './App.vue'
 import Home from './components/Home.vue';
 import Persons from './components/Persons.vue';
@@ -22,6 +24,12 @@ const router = new VueRouter({
 });
 
 Vue.config.productionTip = false;
+
+Vue.filter('formatDate', function (value) {
+    if (value) {
+        return moment(String(value)).format('DD/MM/YYYY hh:mm:ss');
+    }
+});
 
 new Vue({
     router,

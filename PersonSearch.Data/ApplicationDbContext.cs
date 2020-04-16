@@ -14,10 +14,20 @@ namespace PersonSearch.Data
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
+            modelBuilder.Entity<Person>()
+                .Property(person => person.CreatedUtc)
+                .IsRequired()
+                .HasDefaultValueSql("getutcdate()");
+
             modelBuilder.Entity<Group>()
                 .HasMany<Person>(group => group.Persons)
                 .WithOne(person => person.Group)
                 .IsRequired();
+
+            modelBuilder.Entity<Group>()
+                .Property(group => group.CreatedUtc)
+                .IsRequired()
+                .HasDefaultValueSql("getutcdate()");
         }
     }
 }

@@ -7,6 +7,8 @@
   <ItemGroup>
     <Compile Remove="Migrations\20200411114032_AddVirtuals.cs" />
     <Compile Remove="Migrations\20200411114032_AddVirtuals.Designer.cs" />
+    <Compile Remove="Migrations\20200416134726_NonMapped.cs" />
+    <Compile Remove="Migrations\20200416134726_NonMapped.Designer.cs" />
   </ItemGroup>
 
   <ItemGroup>
