@@ -28,6 +28,8 @@ namespace PersonSearch.Data
                 .Property(group => group.CreatedUtc)
                 .IsRequired()
                 .HasDefaultValueSql("getutcdate()");
+
         }
+
     }
 }

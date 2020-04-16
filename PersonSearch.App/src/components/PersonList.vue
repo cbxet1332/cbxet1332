@@ -11,11 +11,33 @@
                 </tr>
             </thead>
             <tbody>
-                <tr v-for="data in Data" :key="data.Id">
-                    <td align="right"><router-link :to="'/person/' + data.Id">{{ data.Id }}</router-link></td>
-                    <td align="left">{{ data.Name }}</td>
-                    <td align="left">{{ data.Group.Name }}</td>
-                    <td align="left" class="read-only"><em>{{ data.CreatedLocal | formatDate }}</em></td>
+                <tr>
+                    <td align="center" valign="middle">*</td>
+                    <td align="left">
+                        <input type="text"
+                               class="form-control"
+                               v-model.lazy="AddPersonText"
+                               placeholder="Enter Person Name" />
+                    </td>
+                    <td align="left">
+                        <select class="form-control" v-model="AddGroupId">
+                            <option class="option-placeholder" value="0" disabled>Choose Group...</option>
+                            <option v-for="group in GroupData"
+                                    :key="group.Id"
+                                    :value="group.Id">
+                                {{ group.Name }}
+                            </option>
+                        </select>
+                    </td>
+                    <td align="left">
+                        <button class="btn btn-secondary" type="button" @click="onButtonClick">Add</button>
+                    </td>
+                </tr>
+                <tr v-for="person in PersonData" :key="person.Id">
+                    <td align="right"><router-link :to="'/person/' + person.Id">{{ person.Id }}</router-link></td>
+                    <td align="left">{{ person.Name }}</td>
+                    <td align="left">{{ person.Group.Name }}</td>
+                    <td align="left" class="read-only"><em>{{ person.CreatedLocal | formatDate }}</em></td>
                 </tr>
             </tbody>
         </table>
@@ -27,19 +49,37 @@
         name: "person-list",
         inject: ['connect'],
         created: function () {
-            this.vm = this.connect("PersonList", this);
+            this.vm = this.connect("PersonList", this, {
+                watch: [
+                    'AddPersonText',
+                    'AddGroupId']
+            });
         },
         destroyed: function () {
             this.vm.$destroy();
         },
         data() {
             return {
-                Data: [],
+                PersonData: [],
                 PersonCount: 0,
-                PersonCountSuffix: 'people'
+                PersonCountSuffix: 'people',
+                AddPersonText: '',
+                AddGroupId: 0,
+                GroupData: [],
+                FilterText: ''
             }
         },
-        props: {}
+        props: {},
+        methods: {
+            onButtonClick: function () {
+                this.vm.$dispatch({ 
+                    AddPerson: { 
+                        PersonName: this.AddPersonText, 
+                        GroupId: this.AddGroupId 
+                    } 
+                });
+            }
+        }
     };
 </script>
 
@@ -62,6 +102,10 @@
     }
     table .read-only {
         color: darkgrey;
+    }
+    option .option-placeholder {
+        color: darkgrey;
+        font-style: italic;
     }
 </style>
 

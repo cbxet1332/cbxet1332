@@ -1,9 +1,9 @@
 <template>
     <div id="search-content">
         <input type="text"
-               class="form-control"
+               class="form-control col-sm-6"
                v-model="SearchText"
-               :placeholder="placeholder">
+               :placeholder="placeholder" />
     </div>
 </template>
 

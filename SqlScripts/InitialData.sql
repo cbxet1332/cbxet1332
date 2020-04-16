@@ -13,6 +13,7 @@ INSERT INTO [dbo].[Groups]([Name]) VALUES ('Associates');
 INSERT INTO [dbo].[Groups]([Name]) VALUES ('World Leaders');
 INSERT INTO [dbo].[Groups]([Name]) VALUES ('Guitar Heros');
 INSERT INTO [dbo].[Groups]([Name]) VALUES ('Film Stars');
+INSERT INTO [dbo].[Groups]([Name]) VALUES ('Cartoon Characters');
 
 -- Family
 INSERT INTO [dbo].[Persons]([Forenames],[Surname],[GroupId]) VALUES ('Joan Evelyn','Edwards', (SELECT Id FROM Groups WHERE [Name]='Family'));
