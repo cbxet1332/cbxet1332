@@ -1,4 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations.Schema;
+﻿using System;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace PersonSearch.Domain
 {
@@ -8,8 +9,12 @@ namespace PersonSearch.Domain
         public string Forenames { get; set; }
         public string Surname { get; set; }
         public Group Group { get; set; }
+        public DateTime CreatedUtc { get; set; }
 
         [NotMapped]
         public string Name => Forenames + " " + Surname;
+
+        [NotMapped] 
+        public DateTime CreatedLocal => CreatedUtc.ToLocalTime();
     }
 }

@@ -6,14 +6,16 @@
                 <tr>
                     <th align="right">Id</th>
                     <th align="left">Person</th>
-                    <th align="left"><em>Group</em></th>
+                    <th align="left">Group</th>
+                    <th align="left"><em>Date Added</em></th>
                 </tr>
             </thead>
             <tbody>
                 <tr v-for="data in Data" :key="data.Id">
                     <td align="right"><router-link :to="'/person/' + data.Id">{{ data.Id }}</router-link></td>
                     <td align="left">{{ data.Name }}</td>
-                    <td align="left"><em>{{ data.Group.Name }}</em></td>
+                    <td align="left">{{ data.Group.Name }}</td>
+                    <td align="left" class="read-only"><em>{{ data.CreatedLocal | formatDate }}</em></td>
                 </tr>
             </tbody>
         </table>
@@ -37,7 +39,7 @@
                 PersonCountSuffix: 'people'
             }
         },
-        props: { }
+        props: {}
     };
 </script>
 
@@ -57,6 +59,9 @@
     }
     table th {
         background-color: burlywood
+    }
+    table .read-only {
+        color: darkgrey;
     }
 </style>
 
