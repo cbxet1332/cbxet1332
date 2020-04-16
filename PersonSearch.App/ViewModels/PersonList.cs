@@ -1,31 +1,25 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
 using DotNetify;
 using JetBrains.Annotations;
-using Microsoft.EntityFrameworkCore;
 using PersonSearch.App.Models;
-using PersonSearch.Data;
 using PersonSearch.Domain;
+using PersonSearch.Service.Contracts;
 
 namespace PersonSearch.App.ViewModels
 {
     [UsedImplicitly]
     public class PersonList : BaseVM
     {
-        private readonly IRepository<Person> _personRepository;
-        private readonly IRepository<Group> _groupRepository;
-        private readonly IApplicationDbContextFactory _contextFactory;
-        private Person[] _people;
-        private Group[] _groups;
+        private readonly IPersonService _personService;
+        private readonly IGroupService _groupService;
+        private IReadOnlyCollection<Person> _people;
+        private IReadOnlyCollection<Group> _groups;
 
-        public PersonList(IApplicationDbContextFactory contextFactory, 
-            IRepository<Person> personRepository, 
-            IRepository<Group> groupRepository)
+        public PersonList(IPersonService personService, IGroupService groupService)
         {
-            _personRepository = personRepository;
-            _groupRepository = groupRepository;
-            _contextFactory = contextFactory;
+            _personService = personService;
+            _groupService = groupService;
 
             GetPersonData();
             GetGroupData();
@@ -35,11 +29,14 @@ namespace PersonSearch.App.ViewModels
 
         public IEnumerable<Person> PersonData => _people;
 
+        [UsedImplicitly]
         public IEnumerable<Group> GroupData => _groups;
 
-        public int PersonCount => _people.Length;
-
+        public int PersonCount => _people.Count;
         public string PersonCountSuffix => PersonCount == 1 ? "person" : "people";
+        public bool IsFiltering => string.IsNullOrEmpty(FilterText) == false;
+
+        public Action<AddPersonDetails> AddPerson { get; set; } 
 
         public string AddPersonText
         {
@@ -55,11 +52,20 @@ namespace PersonSearch.App.ViewModels
 
         public string FilterText
         {
-            get => Get<string>(); 
-            set => Set(value); 
+            get => Get<string>();
+            set
+            {
+                Set(value);
+                Changed(nameof(IsFiltering));
+                PushUpdates();
+            }
         }
 
-        public Action<AddPersonDetails> AddPerson { get; set; } 
+        public void ApplyFilter(string filterOnText)
+        {
+            FilterText = filterOnText;
+            RefreshPersonData();
+        }
 
         private void OnAddPerson(AddPersonDetails addPersonDetails)
         {
@@ -67,41 +73,9 @@ namespace PersonSearch.App.ViewModels
             {
                 return;
             }
-
-            string forenames;
-            var surname = string.Empty;
-
-            var names = addPersonDetails.PersonName.Split(new[] { ' ' }, StringSplitOptions.RemoveEmptyEntries);
-            if (names.Length == 1)
-            {
-                forenames = names[0];
-            }
-            else
-            {
-                surname = names.Last();
-                forenames = string.Join(' ', names.Take(names.Length - 1));
-            }
-
-            using (var context = _contextFactory.Create())
-            {
-                var existingGroup = _groupRepository.FindById(addPersonDetails.GroupId, context);
-                var newPerson = new Person
-                {
-                    Forenames = forenames,
-                    Surname = surname,
-                    Group = existingGroup
-                };
-
-                _personRepository.AddNew(newPerson, context);
-            }
+            _personService.AddNew(addPersonDetails.PersonName, addPersonDetails.GroupId);
 
             ResetAddDetails();
-            RefreshPersonData();
-        }
-
-        public void ApplyFilter(string filterOnText)
-        {
-            FilterText = filterOnText;
             RefreshPersonData();
         }
 
@@ -125,47 +99,12 @@ namespace PersonSearch.App.ViewModels
 
         private void GetGroupData()
         {
-            using (var context = _contextFactory.Create(QueryTrackingBehavior.NoTracking))
-            {
-                _groups = _groupRepository.FetchAll(context)
-                    .ToArray();
-            }
+            _groups = _groupService.GetAllGroups();
         }
 
         private void GetPersonData(string filterOnText = null)
         {
-            using (var context = _contextFactory.Create(QueryTrackingBehavior.NoTracking))
-            {
-                if (string.IsNullOrEmpty(filterOnText))
-                {
-                    _people = _personRepository
-                        .FetchAll(context, person => person.Group)
-                        .ToArray();
-                }
-                else
-                {
-                    var filteredQuery = _personRepository
-                        .Fetch(p => 
-                                EF.Functions.Like(p.Forenames, $"%{filterOnText}%") || 
-                                EF.Functions.Like(p.Surname, $"%{filterOnText}%") || 
-                                EF.Functions.Like(p.Group.Name, $"%{filterOnText}%"),
-                            context,
-                            person => person.Group);
-
-                    if (filteredQuery.Any())
-                    {
-                        _people = filteredQuery.ToArray();
-                    }
-                    else
-                    {
-                        _people = _personRepository
-                            .FetchAll(context, person => person.Group)
-                            .ToList()
-                            .Where(p => p.Name.Contains(filterOnText, StringComparison.InvariantCultureIgnoreCase))
-                            .ToArray();
-                    }
-                } 
-            }
+            _people = _personService.GetFilteredListOfPeople(filterOnText);
         }
     }
 }

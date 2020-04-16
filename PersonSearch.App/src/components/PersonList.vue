@@ -1,6 +1,6 @@
 <template>
     <div id="person-list-content">
-        <p>Showing {{ PersonCount }} {{ PersonCountSuffix }}</p>
+        <p><span v-if="IsFiltering">Matched </span>{{ PersonCount }} {{ PersonCountSuffix }}</p>
         <table align="left">
             <thead>
                 <tr>
@@ -66,7 +66,8 @@
                 AddPersonText: '',
                 AddGroupId: 0,
                 GroupData: [],
-                FilterText: ''
+                FilterText: '',
+                IsFiltering: false,
             }
         },
         props: {},

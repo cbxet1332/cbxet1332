@@ -11,6 +11,9 @@ using PersonSearch.App.ViewModels;
 using PersonSearch.App.ViewModels.WiringTest;
 using PersonSearch.Data;
 using PersonSearch.Domain;
+using PersonSearch.Service;
+using PersonSearch.Service.Contracts;
+using PersonSearch.Service.Services;
 
 namespace PersonSearch.App.Startup
 {
@@ -34,7 +37,8 @@ namespace PersonSearch.App.Startup
 
             services.AddTransient<IApplicationDbContextFactory, ApplicationDbContextFactory>();
             services.AddDbContext<ApplicationDbContext>(options => 
-                options.UseSqlServer(_config.GetConnectionString("DefaultConnection")), ServiceLifetime.Transient);
+                options.UseSqlServer(_config.GetConnectionString("DefaultConnection")), 
+                ServiceLifetime.Transient);
 
             services.AddScoped<IRepository<Person>, Repository<Person>>();
             services.AddScoped<IRepository<Group>, Repository<Group>>();
@@ -48,6 +52,10 @@ namespace PersonSearch.App.Startup
             services.AddScoped<PersonsScope>();
             services.AddScoped<PersonList>();
             services.AddScoped<SearchBar>();
+
+            services.AddScoped<IPersonService, PersonService>();
+            services.AddScoped<IGroupService, GroupService>();
+            services.AddScoped<IPersonNameBuilder, PersonNameBuilder>();
         }
 
         [UsedImplicitly]
