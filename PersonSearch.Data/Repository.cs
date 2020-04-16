@@ -14,6 +14,20 @@ namespace PersonSearch.Data
             _contextFactory = contextFactory;
         }
 
+        public IQueryable<TEntity> FetchAll(IApplicationDbContext context = null)
+        {
+            if (context != null)
+            {
+                return context.Set<TEntity>();
+            }
+            
+            using (var newContext = _contextFactory.Create())
+            {
+                return newContext.Set<TEntity>()
+                    .AsNoTracking();
+            }
+        }
+
         public IQueryable<TEntity> FetchAll<TProperty>(IApplicationDbContext context = null, Expression<Func<TEntity,TProperty>> includeNavigationProperty = null)
         {
             if (context != null)
@@ -81,13 +95,13 @@ namespace PersonSearch.Data
             if (context != null)
             {
                 return context.Set<TEntity>()
-                    .Find(new[] {id});
+                    .Find(id);
             }
             
             using (var newContext = _contextFactory.Create())
             {
                 return newContext.Set<TEntity>()
-                    .Find(new[] { id });
+                    .Find(id);
             }
         }
 
@@ -103,6 +117,24 @@ namespace PersonSearch.Data
                 return newContext.Set<TEntity>()
                     .Count();
             }
+        }
+
+        public void AddNew(TEntity newEntity, IApplicationDbContext context = null)
+        {
+            if (context != null)
+            {
+                context.Add(newEntity);
+                context.SaveChanges();
+            }
+            else
+            {
+                using (var newContext = _contextFactory.Create())
+                {
+                    newContext.Add(newEntity);
+                    newContext.SaveChanges();
+                }
+            }
+
         }
 
         private static IQueryable<TEntity> DoSkipTake<TProperty>(int qtyToSkip, int qtyToTake, IApplicationDbContext context, Expression<Func<TEntity,TProperty>> include)

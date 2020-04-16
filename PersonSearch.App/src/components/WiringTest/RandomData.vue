@@ -1,12 +1,12 @@
 <template>
     <div>
         <h4 class="bold">{{ msg }}</h4>
-        <table align="center" width="400px">
+        <table align="center" width="475px">
             <thead>
                 <tr>
-                    <th align="right" width="25px">Id</th>
-                    <th align="left" width="250px">Person</th>
-                    <th align="left" width="125px"><em>Group</em></th>
+                    <th align="right" width="50px">Id</th>
+                    <th align="left" width="275px">Person</th>
+                    <th align="left" width="150px"><em>Group</em></th>
                 </tr>
             </thead>
             <tbody>

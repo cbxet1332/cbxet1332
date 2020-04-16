@@ -3,7 +3,7 @@
         <h1 class="bold">Persons</h1>
         <div id="child-components">
             <scope vm="PersonsScope">
-                <search-bar placeholder="Enter part of Person or Group to search for"/>
+                <search-bar placeholder="Search for people by entering part of their Name or Group here"/>
                 <person-list />
             </scope>
         </div>
