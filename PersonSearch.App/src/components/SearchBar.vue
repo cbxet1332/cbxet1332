@@ -1,7 +1,7 @@
 <template>
     <div id="search-content">
         <input type="text"
-               class="form-control col-sm-6"
+               class="form-control col-sm-9"
                v-model="SearchText"
                :placeholder="placeholder" />
     </div>

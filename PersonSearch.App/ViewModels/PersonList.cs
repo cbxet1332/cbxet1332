@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using DotNetify;
 using JetBrains.Annotations;
 using PersonSearch.App.Models;
@@ -15,6 +16,10 @@ namespace PersonSearch.App.ViewModels
         private readonly IGroupService _groupService;
         private IReadOnlyCollection<Person> _people;
         private IReadOnlyCollection<Group> _groups;
+        private int _currentPage = 1;
+        private int _pageSize = 10;
+
+        public event EventHandler<int> OnPeopleCountChange;
 
         public PersonList(IPersonService personService, IGroupService groupService)
         {
@@ -27,7 +32,9 @@ namespace PersonSearch.App.ViewModels
             AddPerson = OnAddPerson;
         }
 
-        public IEnumerable<Person> PersonData => _people;
+        public IEnumerable<Person> PersonData => _people
+            .Skip(_pageSize * (_currentPage - 1))
+            .Take(_pageSize);
 
         [UsedImplicitly]
         public IEnumerable<Group> GroupData => _groups;
@@ -36,7 +43,9 @@ namespace PersonSearch.App.ViewModels
         public string PersonCountSuffix => PersonCount == 1 ? "person" : "people";
         public bool IsFiltering => string.IsNullOrEmpty(FilterText) == false;
 
-        public Action<AddPersonDetails> AddPerson { get; set; } 
+        public Action<AddPersonDetails> AddPerson { get; set; }
+
+        public int TotalPeople => _people.Count;
 
         public string AddPersonText
         {
@@ -65,6 +74,18 @@ namespace PersonSearch.App.ViewModels
         {
             FilterText = filterOnText;
             RefreshPersonData();
+        }
+
+        public void SetCurrentPage(int currentPage)
+        {
+            _currentPage = currentPage;
+            Changed(nameof(PersonData));
+            PushUpdates();
+        }
+
+        public void SetPageSize(int pageSize)
+        {
+            _pageSize = pageSize;
         }
 
         private void OnAddPerson(AddPersonDetails addPersonDetails)
@@ -105,6 +126,7 @@ namespace PersonSearch.App.ViewModels
         private void GetPersonData(string filterOnText = null)
         {
             _people = _personService.GetFilteredListOfPeople(filterOnText);
+            OnPeopleCountChange?.Invoke(this, _people.Count);
         }
     }
 }
