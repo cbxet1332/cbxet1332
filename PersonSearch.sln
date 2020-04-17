@@ -20,7 +20,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PersonSearch.Service", "Per
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tests", "Tests", "{8793C9EC-6853-452B-A191-FA8D8AA3CE0B}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PersonSearch.Service.Test", "Tests\PersonSearch.Service.Test\PersonSearch.Service.Test.csproj", "{909F8A17-8DF3-44B6-B171-FA2F5A2E6C21}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PersonSearch.Service.Test", "Tests\PersonSearch.Service.Test\PersonSearch.Service.Test.csproj", "{909F8A17-8DF3-44B6-B171-FA2F5A2E6C21}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -51,6 +51,9 @@ Global
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{909F8A17-8DF3-44B6-B171-FA2F5A2E6C21} = {8793C9EC-6853-452B-A191-FA8D8AA3CE0B}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {22EB3E7E-7205-4901-A588-769E705B7F9B}

@@ -11,7 +11,6 @@ using PersonSearch.App.ViewModels;
 using PersonSearch.App.ViewModels.WiringTest;
 using PersonSearch.Data;
 using PersonSearch.Domain;
-using PersonSearch.Service;
 using PersonSearch.Service.Contracts;
 using PersonSearch.Service.Services;
 
