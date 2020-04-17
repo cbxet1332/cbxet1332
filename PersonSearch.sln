@@ -16,6 +16,12 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PersonSearch.Domain", "Pers
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PersonSearch.Data", "PersonSearch.Data\PersonSearch.Data.csproj", "{265E94EF-7EF8-44C0-AD8C-AE58053CABE4}"
 EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PersonSearch.Service", "PersonSearch.Service\PersonSearch.Service.csproj", "{B26B289D-4E3A-4E34-99B5-A4A23F4C68F5}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tests", "Tests", "{8793C9EC-6853-452B-A191-FA8D8AA3CE0B}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PersonSearch.Service.Test", "Tests\PersonSearch.Service.Test\PersonSearch.Service.Test.csproj", "{909F8A17-8DF3-44B6-B171-FA2F5A2E6C21}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -34,6 +40,14 @@ Global
 		{265E94EF-7EF8-44C0-AD8C-AE58053CABE4}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{265E94EF-7EF8-44C0-AD8C-AE58053CABE4}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{265E94EF-7EF8-44C0-AD8C-AE58053CABE4}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B26B289D-4E3A-4E34-99B5-A4A23F4C68F5}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B26B289D-4E3A-4E34-99B5-A4A23F4C68F5}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B26B289D-4E3A-4E34-99B5-A4A23F4C68F5}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B26B289D-4E3A-4E34-99B5-A4A23F4C68F5}.Release|Any CPU.Build.0 = Release|Any CPU
+		{909F8A17-8DF3-44B6-B171-FA2F5A2E6C21}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{909F8A17-8DF3-44B6-B171-FA2F5A2E6C21}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{909F8A17-8DF3-44B6-B171-FA2F5A2E6C21}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{909F8A17-8DF3-44B6-B171-FA2F5A2E6C21}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

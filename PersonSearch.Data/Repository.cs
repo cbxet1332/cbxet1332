@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Linq;
 using System.Linq.Expressions;
+using JetBrains.Annotations;
 using Microsoft.EntityFrameworkCore;
 
 namespace PersonSearch.Data
@@ -119,24 +120,22 @@ namespace PersonSearch.Data
             }
         }
 
-        public void AddNew(TEntity newEntity, IApplicationDbContext context = null)
+        public bool AddNew(TEntity newEntity, IApplicationDbContext context = null)
         {
             if (context != null)
             {
                 context.Add(newEntity);
-                context.SaveChanges();
-            }
-            else
-            {
-                using (var newContext = _contextFactory.Create())
-                {
-                    newContext.Add(newEntity);
-                    newContext.SaveChanges();
-                }
+                return context.SaveChanges() == 1;
             }
 
+            using (var newContext = _contextFactory.Create())
+            {
+                newContext.Add(newEntity);
+                return newContext.SaveChanges() == 1;
+            }
         }
 
+        [NotNull]
         private static IQueryable<TEntity> DoSkipTake<TProperty>(int qtyToSkip, int qtyToTake, IApplicationDbContext context, Expression<Func<TEntity,TProperty>> include)
         {
             return context.Set<TEntity>()
@@ -145,6 +144,7 @@ namespace PersonSearch.Data
                 .Take(qtyToTake);
         }
 
+        [NotNull]
         private static IQueryable<TEntity> DoFetchAll<TProperty>(IApplicationDbContext context, Expression<Func<TEntity,TProperty>> include)
         {
             return context.Set<TEntity>()

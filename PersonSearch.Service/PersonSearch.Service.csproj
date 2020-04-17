@@ -1,0 +1,12 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netstandard2.0</TargetFramework>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\PersonSearch.Data\PersonSearch.Data.csproj" />
+    <ProjectReference Include="..\PersonSearch.Domain\PersonSearch.Domain.csproj" />
+  </ItemGroup>
+
+</Project>
