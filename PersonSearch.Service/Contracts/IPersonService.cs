@@ -9,5 +9,6 @@ namespace PersonSearch.Service.Contracts
         [NotNull]
         IReadOnlyCollection<Person> GetFilteredListOfPeople(string filterText);
         bool AddNew(string name, int groupId);
+        int GetPersonCount();
     }
 }

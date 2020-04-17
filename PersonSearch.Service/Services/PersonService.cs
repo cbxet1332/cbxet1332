@@ -82,5 +82,13 @@ namespace PersonSearch.Service.Services
                 return _personRepo.AddNew(newPerson, context);
             }
         }
+
+        public int GetPersonCount()
+        {
+            using (var context = _contextFactory.Create())
+            {
+                return _personRepo.Count(context);
+            }
+        }
     }
 }
