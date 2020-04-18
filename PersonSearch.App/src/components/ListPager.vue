@@ -1,10 +1,12 @@
 <template>
     <div class="btn-toolbar">
         <div id="list-pager-content" class="btn-group">
-            <button class="btn btn-secondary" type="button" @click="onPrevClick" :disabled="!IsPrevEnabled">&nbsp;&lt;&nbsp;</button>
-            <button class="btn btn-secondary" type="button" @click="onNextClick" disabled>&nbsp;{{ CurrentPage }}&nbsp;</button>
-            <button class="btn btn-secondary" type="button" @click="onNextClick" :disabled="!IsNextEnabled">&nbsp;&gt;&nbsp;</button>
+            <button class="btn btn-secondary" type="button" @click="onFirstClick" :disabled="CurrentPage == 1">&nbsp;&lt;&lt;&nbsp;</button>
+            <button class="btn btn-secondary" type="button" @click="onPrevClick" :disabled="CurrentPage == 1">&nbsp;&lt;&nbsp;</button>
+            <button class="btn btn-secondary" type="button" @click="onNextClick" :disabled="CurrentPage == TotalPages">&nbsp;&gt;&nbsp;</button>
+            <button class="btn btn-secondary" type="button" @click="onLastClick" :disabled="CurrentPage == TotalPages">&nbsp;&gt;&gt;&nbsp;</button>
         </div>
+        <div id="current-page">{{CurrentPage}}/{{TotalPages}}</div>
     </div>
 </template>
 
@@ -23,19 +25,22 @@
         data() {
             return {
                 CurrentPage: 1,
-                IsPrevEnabled: false,
-                IsNextEnabled: true
+                TotalPages: 1
             }
         },
         props: { },
         methods: {
             onPrevClick: function () {
                 this.CurrentPage = this.CurrentPage - 1;
-                //this.vm.$dispatch({ PageChange: this.CurrentPage });
             },
             onNextClick: function () {
                 this.CurrentPage = this.CurrentPage + 1;
-                //this.vm.$dispatch({ NextPage: this.CurrentPage });
+            },
+            onFirstClick: function () {
+                this.CurrentPage = 1;
+            },
+            onLastClick: function () {
+                this.CurrentPage = this.TotalPages;
             }
         }
     };
@@ -44,6 +49,10 @@
 <style type="text/css">
     .small {
         font-size: small
+    }
+    #current-page {
+        margin-top: 8px;
+        margin-left: 8px;
     }
 </style>
 

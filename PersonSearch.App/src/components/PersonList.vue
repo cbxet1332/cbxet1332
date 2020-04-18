@@ -1,6 +1,11 @@
 <template>
     <div id="person-list-content">
-        <p><span v-if="IsFiltering">Matched </span>{{ PersonCount }} {{ PersonCountSuffix }}</p>
+        <p>
+            <span v-if="IsFiltering">Matched </span>
+            <span v-if="PersonCount > 0">{{ PersonCount }}</span>
+            <span v-else>Loading</span>
+            <span> {{ PersonCountSuffix }}</span>
+        </p>
         <table align="left">
             <thead>
                 <tr>

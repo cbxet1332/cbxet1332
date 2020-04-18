@@ -5,7 +5,7 @@
             <scope vm="PersonsScope">
                 <table class="no-border" cellspacing="0" cellpadding="0">
                     <tr class="no-border">
-                        <td class="no-border"><search-bar placeholder="Search for people by entering part of their Name or Group here" /></td>
+                        <td class="no-border"><search-bar placeholder="Start entering a Person or Group to search" /></td>
                     </tr>
                     <tr class="no-border">
                         <td class="no-border"><person-list /></td>
