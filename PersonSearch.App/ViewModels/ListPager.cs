@@ -26,21 +26,13 @@ namespace PersonSearch.App.ViewModels
             {
                 Set(value);
                 OnPageChange?.Invoke(this, value);
-                RecalculateButtons();
             }
         }
 
         [UsedImplicitly]
-        public bool IsPrevEnabled
+        public int TotalPages
         {
-            get => Get<bool>(); 
-            set => Set(value);
-        }
-
-        [UsedImplicitly]
-        public bool IsNextEnabled
-        {
-            get => Get<bool>(); 
+            get => Get<int>(); 
             set => Set(value);
         }
 
@@ -91,16 +83,12 @@ namespace PersonSearch.App.ViewModels
                 _maxPages = 1;
             }
 
+            TotalPages = _maxPages;
+
             if (CurrentPage > _maxPages)
             {
                 CurrentPage = _maxPages;
             }
-        }
-
-        private void RecalculateButtons()
-        {
-            IsPrevEnabled = CurrentPage > 1;
-            IsNextEnabled = CurrentPage < _maxPages;
         }
     }
 }
