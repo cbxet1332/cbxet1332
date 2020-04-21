@@ -8,7 +8,6 @@ namespace PersonSearch.Service.Test
     [ExcludeFromCodeCoverage]
     public class PersonNameBuilderTests
     {
-        [Test]
         [TestCase("Roscoe Melton", "Roscoe", "Melton", TestName = "Build_001")]
         [TestCase("Frederick Alowishus Bloggs", "Frederick Alowishus", "Bloggs", TestName = "Build_002")]
         [TestCase("Charles William Arthur George Windsor", "Charles William Arthur George", "Windsor", TestName = "Build_003")]

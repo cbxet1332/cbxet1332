@@ -1,4 +1,7 @@
-﻿namespace PersonSearch.Service.Models
+﻿using System.Collections;
+using PersonSearch.Domain;
+
+namespace PersonSearch.Service.Models
 {
     public class PersonName
     {
