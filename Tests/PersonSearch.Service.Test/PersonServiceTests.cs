@@ -37,7 +37,8 @@ namespace PersonSearch.Service.Test
             mockPersonRepo.Setup(m => m.Fetch(It.IsAny<Expression<Func<Person,bool>>>(), It.IsAny<IApplicationDbContext>(), person => person.Group)).Returns(samplePeople.AsQueryable());
             var mockGroupRepo = new Mock<IRepository<Group>>();
             var personNameBuilder = new PersonNameBuilder();
-            var personService = new PersonService(mockContextFactory.Object, mockPersonRepo.Object, mockGroupRepo.Object, personNameBuilder);
+            var personFilterBuilder = new PersonFilterBuilder();
+            var personService = new PersonService(mockContextFactory.Object, mockPersonRepo.Object, mockGroupRepo.Object, personNameBuilder, personFilterBuilder);
 
             //act
             var results = personService.GetFilteredListOfPeople(filter);
@@ -79,7 +80,8 @@ namespace PersonSearch.Service.Test
                     ((filterExpression, _, __) => samplePeople.AsQueryable().Where(filterExpression));
             var mockGroupRepo = new Mock<IRepository<Group>>();
             var personNameBuilder = new PersonNameBuilder();
-            var personService = new PersonService(mockContextFactory.Object, mockPersonRepo.Object, mockGroupRepo.Object, personNameBuilder);
+            var personFilterBuilder = new PersonFilterBuilder();
+            var personService = new PersonService(mockContextFactory.Object, mockPersonRepo.Object, mockGroupRepo.Object, personNameBuilder, personFilterBuilder);
 
             //act
             var results = personService.GetFilteredListOfPeople(filter);
@@ -120,7 +122,8 @@ namespace PersonSearch.Service.Test
                 .Setup(m => m.FindById(It.IsAny<int>(), It.IsAny<IApplicationDbContext>()))
                 .Returns(sampleGroup);
             var personNameBuilder = new PersonNameBuilder();
-            var personService = new PersonService(mockContextFactory.Object, mockPersonRepo.Object, mockGroupRepo.Object, personNameBuilder);
+            var personFilterBuilder = new PersonFilterBuilder();
+            var personService = new PersonService(mockContextFactory.Object, mockPersonRepo.Object, mockGroupRepo.Object, personNameBuilder, personFilterBuilder);
 
             //act
             var result = personService.AddNew("Ainsley Harriot", 1);
@@ -128,8 +131,8 @@ namespace PersonSearch.Service.Test
             //assert
             Assert.IsTrue(result);
             Assert.IsTrue(samplePeople.Any(p => p.Surname == "Harriot"));
-            //assert addnew called
-            //assert findbyid caled
+            mockPersonRepo.Verify(r => r.AddNew(It.IsAny<Person>(), It.IsAny<IApplicationDbContext>()), Times.Once);
+            mockGroupRepo.Verify(r => r.FindById(It.IsAny<int>(), It.IsAny<IApplicationDbContext>()), Times.Once);
         }
 
         [TestCase(null,          1, TestName = "AddNew_001")]
@@ -144,15 +147,16 @@ namespace PersonSearch.Service.Test
             var mockPersonRepo = new Mock<IRepository<Person>>();
             var mockGroupRepo = new Mock<IRepository<Group>>();
             var personNameBuilder = new PersonNameBuilder();
-            var personService = new PersonService(mockContextFactory.Object, mockPersonRepo.Object, mockGroupRepo.Object, personNameBuilder);
+            var personFilterBuilder = new PersonFilterBuilder();
+            var personService = new PersonService(mockContextFactory.Object, mockPersonRepo.Object, mockGroupRepo.Object, personNameBuilder, personFilterBuilder);
 
             //act
             var result = personService.AddNew(name, groupId);
 
             //assert
             Assert.IsFalse(result);
-            //assert groupRepo.FindById() NOT called
-            //assert personRepo.AddNew() NOT called
+            mockPersonRepo.Verify(r => r.AddNew(It.IsAny<Person>(), It.IsAny<IApplicationDbContext>()), Times.Never);
+            mockGroupRepo.Verify(r => r.FindById(It.IsAny<int>(), It.IsAny<IApplicationDbContext>()), Times.Never);
         }
     }
 

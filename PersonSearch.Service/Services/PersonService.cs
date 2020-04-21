@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using Microsoft.EntityFrameworkCore;
 using PersonSearch.Data;
@@ -13,17 +14,20 @@ namespace PersonSearch.Service.Services
         private readonly IRepository<Person> _personRepo;
         private readonly IRepository<Group> _groupRepo;
         private readonly IPersonNameBuilder _personNameBuilder;
+        private readonly IPersonFilterBuilder _personFilterBuilder;
 
         public PersonService(
             IApplicationDbContextFactory contextFactory, 
             IRepository<Person> personRepo,
             IRepository<Group> groupRepo,
-            IPersonNameBuilder personNameBuilder)
+            IPersonNameBuilder personNameBuilder,
+            IPersonFilterBuilder personFilterBuilder)
         {
             _contextFactory = contextFactory;
             _personRepo = personRepo;
             _groupRepo = groupRepo;
             _personNameBuilder = personNameBuilder;
+            _personFilterBuilder = personFilterBuilder;
         }
 
         public IReadOnlyCollection<Person> GetFilteredListOfPeople(string filterText)
@@ -38,13 +42,11 @@ namespace PersonSearch.Service.Services
                 }
 
                 var lowerFilterText = filterText.ToLowerInvariant();
+                var queryFilter = _personFilterBuilder.Build(lowerFilterText);
                 var filteredQuery = _personRepo
-                    .Fetch(p => 
-                            EF.Functions.Like(p.Forenames, $"%{lowerFilterText}%") || 
-                            EF.Functions.Like(p.Surname, $"%{lowerFilterText}%") || 
-                            EF.Functions.Like(p.Group.Name, $"%{lowerFilterText}%"),
-                        context,
-                        person => person.Group);
+                        .Fetch(queryFilter.Filter,
+                            context,
+                            person => person.Group);
 
                 if (filteredQuery.Any())
                 {

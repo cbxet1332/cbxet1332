@@ -55,6 +55,7 @@ namespace PersonSearch.App.Startup
             services.AddScoped<IPersonService, PersonService>();
             services.AddScoped<IGroupService, GroupService>();
             services.AddScoped<IPersonNameBuilder, PersonNameBuilder>();
+            services.AddScoped<IPersonFilterBuilder, PersonFilterBuilder>();
         }
 
         [UsedImplicitly]
