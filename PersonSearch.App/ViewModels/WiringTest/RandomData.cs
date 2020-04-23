@@ -1,78 +1,70 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Threading;
-using DotNetify;
+using System.Reactive.Linq;
+using System.Reactive.Subjects;
 using JetBrains.Annotations;
 using Microsoft.EntityFrameworkCore;
+using PersonSearch.App.ViewModels.Base;
 using PersonSearch.Data;
 using PersonSearch.Domain;
 
 namespace PersonSearch.App.ViewModels.WiringTest
 {
     [UsedImplicitly]
-    public class RandomData : BaseVM
+    public class RandomData : DisposableVM
     {
         private readonly IRepository<Person> _personRepository;
-        private Random _random;
-        private readonly Timer[] _timers;
-        private readonly RandomDataItem[] _randomDataItems;
-        private int[] _indexes;
-        private int[] _timerIntervals;
-        private int _personCount = 0;
+        private readonly IApplicationDbContextFactory _contextFactory;
+        private readonly Random _random;
+        private readonly BehaviorSubject<RandomDataItem>[] _randomDataItems;
+        private readonly int _personCount;
 
         public RandomData(IRepository<Person> personRepository, IApplicationDbContextFactory contextFactory)
         {
-            _random = new Random();
             _personRepository = personRepository;
+            _contextFactory = contextFactory;
 
-            using (var context = contextFactory.Create(QueryTrackingBehavior.NoTracking))
+            var initialData = new RandomDataItem { Person = "Waiting..." };
+            _randomDataItems = new []
             {
+                new BehaviorSubject<RandomDataItem>(initialData), 
+                new BehaviorSubject<RandomDataItem>(initialData)
+            };
+
+            _random = new Random();
+
+            using var context = contextFactory.Create(QueryTrackingBehavior.NoTracking);
                 _personCount = personRepository.Count(context);
-            }
 
-            _indexes = new[] {0, 1}; 
-            _timerIntervals = new[] { 3000, 5000 };
-            _randomDataItems = _indexes.Select(_ => (RandomDataItem)null).ToArray();
-            _timers = _indexes.Select(index => new Timer(state =>
-            {
-                var randomPersonIndex = GetNewRandomIndex();
-                using (var context = contextFactory.Create(QueryTrackingBehavior.NoTracking))
-                {
-                    _randomDataItems[index] = _personRepository
-                        .SkipTake(randomPersonIndex, 1, context, person => person.Group)
-                        .ToList()
-                        .Select(person => new RandomDataItem
-                        {
-                            Index = index,
-                            Id = person.Id,
-                            Person = $"{person.Forenames} {person.Surname}",
-                            Group = person.Group.Name
-                        })
-                        .First();
-                }
-                Changed(nameof(Data));
-                PushUpdates();
-            }, null, 0, _timerIntervals[index])).ToArray();
+            AddProperty<IEnumerable<RandomDataItem>>("Data")
+                .DisposeWith(this)
+                .SubscribeTo(Observable.CombineLatest(_randomDataItems[0], _randomDataItems[1]));
+
+            Observable.Interval(TimeSpan.FromSeconds(3))
+                .Subscribe(_ => UpdateRandomData(0))
+                .DisposeWith(this);
+
+            Observable.Interval(TimeSpan.FromSeconds(5))
+                .Subscribe(_ => UpdateRandomData(1))
+                .DisposeWith(this);
         }
 
-        public IEnumerable<RandomDataItem> Data => _randomDataItems.Where(dataItem => dataItem != null);
-
-        public override void Dispose()
+        private void UpdateRandomData(int index)
         {
-            _timers[0].Dispose();
-            _timers[1].Dispose();
-        }
-
-        private int GetNewRandomIndex()
-        {
-            int index;
-            do
-            {
-                index = _random.Next(0, _personCount - 1);
-            } while (Data.Any(item => item.Id == index));
-
-            return index;
+            var randomPersonIndex = _random.Next(0, _personCount - 1);
+            using var context = _contextFactory.Create(QueryTrackingBehavior.NoTracking);
+                _randomDataItems[index].OnNext(_personRepository
+                    .SkipTake(randomPersonIndex, 1, context, person => person.Group)
+                    .ToList()
+                    .Select(person => new RandomDataItem
+                    {
+                        Index = index,
+                        Id = person.Id,
+                        Person = $"{person.Forenames} {person.Surname}",
+                        Group = person.Group.Name
+                    })
+                    .First());
         }
     }
 

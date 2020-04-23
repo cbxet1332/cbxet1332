@@ -1,33 +1,31 @@
 ﻿using System;
-using System.Threading;
-using DotNetify;
+using System.Reactive.Linq;
 using JetBrains.Annotations;
+using PersonSearch.App.ViewModels.Base;
 
 namespace PersonSearch.App.ViewModels.WiringTest
 {
     [UsedImplicitly]
-    public class ServerDateTime : BaseVM
+    public class ServerDateTime : DisposableVM
     {
-        private readonly Timer _timer;
-
         public ServerDateTime()
         {
-            _timer = new Timer(state =>
-            {
-                Changed(nameof(ServerDate));
-                Changed(nameof(ServerTime));
-                PushUpdates();
-            }, null, 0, 250);
-        }
+            var timerStream = Observable.Interval(TimeSpan.FromMilliseconds(250)).StartWith(0);
 
-        private DateTime _serverDateTime => DateTime.Now;
+            var serverDateTime = AddInternalProperty<DateTime>("ServerDateAndTime")
+                .DisposeWith(this)
+                .SubscribeTo(timerStream.Select(_ => DateTime.Now));
 
-        public string ServerDate => _serverDateTime.ToString("dd/MM/yyyy");    
-        public string ServerTime => _serverDateTime.ToString("HH:mm:ss.fff");    
+            AddProperty<string>("ServerDate")
+                .DisposeWith(this)
+                .SubscribeTo(serverDateTime.Select(dt => dt.ToString("dd/MM/yyyy")));
 
-        public override void Dispose()
-        {
-            _timer.Dispose();
+            AddProperty<string>("ServerTime")
+                .DisposeWith(this)
+                .SubscribeTo(serverDateTime.Select(dt => dt.ToString("HH:mm:ss.fff")));
+
+            serverDateTime.Subscribe(_ => PushUpdates())
+                .DisposeWith(this);
         }
     }
 }
