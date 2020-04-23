@@ -1,13 +1,15 @@
 ﻿using System;
+using System.Reactive.Subjects;
 using DotNetify;
 using JetBrains.Annotations;
+using PersonSearch.App.ViewModels.Base;
 
 namespace PersonSearch.App.ViewModels.WiringTest
 {
     [UsedImplicitly]
-    public class ButtonTestHandler : BaseVM
+    public class ButtonTestHandler : DisposableVM
     {
-        public event EventHandler<bool> Clicked;
+        public ReplaySubject<bool> Clicked = new ReplaySubject<bool>(TimeSpan.FromSeconds(5));
 
         public override void OnSubVMCreated(BaseVM childViewModel)
         {
@@ -24,12 +26,12 @@ namespace PersonSearch.App.ViewModels.WiringTest
 
         private void InitButtonTest(ButtonTest vm)
         {
-            vm.OnButtonClick += (sender, clicked) => Clicked?.Invoke(this, clicked);
+            vm.ButtonClick.Subscribe(Clicked).DisposeWith(this);
         }
 
         private void InitButtonTestCounter(ButtonTestCounter vm)
         {
-            Clicked += (sender, clicked) => vm.SetClickCount(vm.ButtonClickCount + 1);
+            Clicked.Subscribe(_ => vm.SetClickCount(vm.GetClickCount() + 1));
         }
     }
 }
