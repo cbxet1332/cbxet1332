@@ -11,6 +11,7 @@ namespace PersonSearch.App.ViewModels.Base
         public override void Dispose()
         {
             _toBeDisposed.Dispose();
+            base.Dispose();
         }
 
         public void AddDisposable(IDisposable toBeDisposed)

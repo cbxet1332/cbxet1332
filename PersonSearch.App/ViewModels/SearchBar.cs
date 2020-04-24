@@ -1,23 +1,19 @@
-﻿using System;
-using DotNetify;
+﻿using System.Reactive.Subjects;
 using JetBrains.Annotations;
+using PersonSearch.App.ViewModels.Base;
 
 namespace PersonSearch.App.ViewModels
 {
     [UsedImplicitly]
-    public class SearchBar : BaseVM
+    public class SearchBar : DisposableVM
     {
-        public event EventHandler<string> OnCriteriaChange;
+        public BehaviorSubject<string> SearchCriteria = new BehaviorSubject<string>("");
 
-        [UsedImplicitly]
-        public string SearchText
+        public SearchBar()
         {
-            get => Get<string>() ?? ""; 
-            set
-            {
-                Set(value);
-                OnCriteriaChange?.Invoke(this, value);
-            }
+            AddProperty("SearchText", "")
+                .Subscribe(SearchCriteria)
+                .DisposeWith(this);
         }
     }
 }
