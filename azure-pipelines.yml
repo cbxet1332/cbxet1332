@@ -4,8 +4,13 @@
 # https://docs.microsoft.com/azure/devops/pipelines/languages/dotnet-core
 
 trigger:
-- moredev
-- master
+  branches:
+    include:
+    - moredev
+    - master
+    exclude:
+    - ET*
+    - EFD*
 
 pool:
   vmImage: 'windows-latest'
