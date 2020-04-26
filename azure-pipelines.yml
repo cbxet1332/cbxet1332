@@ -4,8 +4,13 @@
 # https://docs.microsoft.com/azure/devops/pipelines/languages/dotnet-core
 
 trigger:
-- moredev
-- master
+  branches:
+    include:
+    - moredev
+    - master
+    exclude:
+    - ET*
+    - EFD*
 
 pool:
   vmImage: 'windows-latest'
@@ -31,9 +36,11 @@ steps:
 
 - task: VSTest@2
   inputs:
+    platform: '$(buildPlatform)'
+    configuration: '$(buildConfiguration)'
     testSelector: 'testAssemblies'
     testAssemblyVer2: |
-      **\*test*.dll
+      **\Tests\**\*.Test.dll
       !**\*TestAdapter.dll
       !**\obj\**
     searchFolder: '$(System.DefaultWorkingDirectory)'
