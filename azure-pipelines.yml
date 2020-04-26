@@ -5,6 +5,7 @@
 
 trigger:
 - moredev
+- master
 
 pool:
   vmImage: 'windows-latest'
